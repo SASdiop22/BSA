@@ -29,7 +29,7 @@ double weierstrass(const std::vector<double>& x, double a, double b){
     }
     return resultat;
 }
-
+//fonction Michalewicz
 double michalewicz(const std::vector<double>& x, int m=10){
     double resultat = 0.0;
     int n = x.size();
