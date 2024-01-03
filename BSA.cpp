@@ -18,17 +18,18 @@ OriginalBSA::OriginalBSA(int epoch1, int popSize1, int dimension1):
 
 }
 
-void OriginalBSA::trierPopulationEnFonctionDeFitness(std::vector<double>& fitn, std::vector<std::vector<double>>& population) {
-
+void OriginalBSA::trierPopulationEnFonctionDeFitness(std::vector<double>& fitn, std::vector<std::vector<double>>& population)
+{
 }
 
 //corriger la posisition si hors des limites
-double OriginalBSA::amendPosition(double& pos, double lb, double ub) {
+double OriginalBSA::amendPosition(double& pos, double lb, double ub)
+{
     if(pos < lb || pos > ub)
     {
-
         pos = U(generateur)*(ub-lb) + lb;
     }
+    return pos;
 }
 
 //algo du  BSA
@@ -51,24 +52,19 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
         fitnessP[i] =  func(P[i]);
     }
 
-
-
     int iter{0};
-    while(globalMinimum > 1e-16 && iter < epoch)
+    while(iter < epoch &&globalMinimum > 1e-16)
     {
         iter += 1;
         //SelectionI
         double a = U(generateur);
         double b = U(generateur);
-        //std::cout << " a = " << a << " b = " << b << '\n';
+
         if(a<b)
         {
            oldP  = copie(P);
         }
         std::shuffle(oldP.begin(), oldP.end(), generateur);
-
-
-
             // Mutation
             std::vector<std::vector<double>> mutant{};
             mutant.resize(popSize,std::vector<double>(dimension));
@@ -81,7 +77,9 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
                     }
                 }
             // mutant = d_P + (3.0*normalDistributorN(0.0,1.0))*(d_oldP - d_P);
+
             std::vector<std::vector<bool>> map(popSize, std::vector<bool>(dimension,true));
+
             std::vector<int> TD(dimension);
             for(int i{0}; i < dimension; i++)
             {
@@ -95,7 +93,7 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
                 for(int i{0}; i < popSize; ++i)
                 {
                     int x = TD[mixrate * static_cast<int>(U(generateur)) *dimension];
-                    map[i][x] = 0;
+                    map[i][x] = false;
                 }
             }
             else
@@ -104,7 +102,7 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
                 {
                     std::uniform_real_distribution<double> Ux(0.0,dimension);
                     int x = static_cast<int>(Ux(generateur));
-                    map[i][x] = 0;
+                    map[i][x] = false;
                 }
             }
             std::vector<std::vector<double>> T = mutant;
@@ -112,7 +110,7 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
             {
                 for(int j{0}; j < dimension; ++j)
                 {
-                    if(map[i][j] == 1)
+                    if(map[i][j] == true)
                         T[i][j] = P[i][j];
                 }
             }
@@ -120,10 +118,9 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
             {
                 for(int j{0}; j < dimension; ++j)
                 {
-                    amendPosition(T[i][j],lb[j],ub[j]);
+                    T[i][j] = amendPosition(T[i][j],lb[j],ub[j]);
                 }
             }
-
 
         //SelectionII
         std::vector<double> fitnessT(popSize);
@@ -140,6 +137,7 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
             }
         }
         //double fitnessPbest = *std::min_element(fitnessP.begin(),fitnessP.end());
+
         int best = 0;
         for(int i{1}; i < popSize; ++i)
         {
@@ -153,16 +151,6 @@ std::vector<double> OriginalBSA::solve(std::vector<double> &lb,std::vector<doubl
             globalMinimum = fitnessP[best];
             globalMinimizer = P[best];
         }
-        std::cout << "------------------------------------------------------------------------------------------------------"<<'\n';
-
-//        std::cout << "Population P : " << '\n';
-//        affiche(P);
-//        std::cout << "Population oldP : " << '\n';
-//        affiche(oldP);
-        std::cout << "Meilleur individu: " << '\n';
-        affiche(globalMinimizer);
-        std::cout<<"globalMinimum: " ;
-        std::cout<<globalMinimum << '\n';
     }
-    std::cout<< "Nombre iteration realise: " << iter << '\n';
+    return globalMinimizer;
 }

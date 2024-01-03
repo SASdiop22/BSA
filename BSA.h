@@ -1,7 +1,6 @@
 #ifndef BSA_H_INCLUDED
 #define BSA_H_INCLUDED
 #define PI 3.14159265
-
 #include <string>
 #include <iostream>
 #include <cmath>
@@ -14,7 +13,7 @@
 class OriginalBSA
 {
 public:
-    OriginalBSA(int epoch1 = 1000, int popSize1 = 100, int dimension1 = 30);
+    OriginalBSA(int epoch1 = 1000, int popSize1 = 30, int dimension1 = 30);
     std::vector<double> solve(std::vector<double> &lb,std::vector<double> &ub, std::function<double(std::vector<double>)> func, double mixrate);
 private:
     void trierPopulationEnFonctionDeFitness(std::vector<double>& fitn, std::vector<std::vector<double>>& population);
@@ -22,11 +21,6 @@ private:
     int epoch;
     int popSize;
     int dimension;
-
-//    std::vector<std::vector<double>> d_P, d_oldP, d_T;
-// void selectionI();
-//    std::vector<std::vector<double>> mutation();
-//    void selectionII();
 
 };
 
