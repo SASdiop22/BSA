@@ -1,7 +1,7 @@
 #ifndef BENCHMARKS_H_INCLUDED
 #define BENCHMARKS_H_INCLUDED
-#include"math.h"
 
+//Bornes [-5,5]
 inline double rosenbrock(const std::vector<double>& x) {
     double sum = 0.0;
     int n = x.size();
@@ -10,15 +10,28 @@ inline double rosenbrock(const std::vector<double>& x) {
         double term2 = pow(1 - x[i], 2);
         sum += term1 + term2;
     }
-
     return sum;
 }
+//Bornes [-5.12,5.12]
+inline double rastrigin(const std::vector<double>& x) {
+    int n = x.size();
+    double sum = 10.0 * n;
 
-double sixHumpCamelback(const std::vector<double>& x)
-{
-    return (4 - 2.1 * x[0] * x[0] + std::pow(x[0], 4) / 3) * x[0] * x[0] + x[0] * x[1] + (-4 + 4 * x[1] * x[1]) * x[1] * x[1];
+    for (int i = 0; i < n; ++i) {
+        sum += (x[i] * x[i] - 10 * cos(2 * M_PI * x[i]));
+    }
+    return sum;
 }
-
+//Bornes [-500,500]
+inline double schwefel(const std::vector<double>& x) {
+    int n = x.size();
+	double sum = 418.9829 * n;
+	double subSum = 0.0;
+	for (unsigned int i = 0; i < n; i++) {
+		subSum += (x[i] * std::sin(std::sqrt(std::abs(x[i]))));
+	}
+	return sum - subSum;
+}
 
 //fonction Weierstrass
 
@@ -38,6 +51,5 @@ double michalewicz(const std::vector<double>& x, int m=10){
     }
     return resultat;
 }
-
 
 #endif // BENCHMARKS_H_INCLUDED
