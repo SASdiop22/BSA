@@ -49,9 +49,39 @@ inline double michalewicz(const std::vector<double>& x){
     int m=10;
     int n = x.size();
     for(int i=0; i< n; i++){
-        resultat += sin(x[i]) * pow(sin((i+1)*x[i]*x[i]/PI),2*m);
+        resultat += -sin(x[i]) * pow(sin((i+1)*x[i]*x[i]/PI),2*m);
     }
-    return -resultat;
+    return resultat;
+}
+//fonction Griewank
+
+double griewank(const std::vector<double>& x)
+{
+    int n= x.size();
+    double sum=0.0;
+    double prod=1.0;
+    for(int i{0}; i<n ; i++)
+        {
+            sum+= x[i]*x[i];
+            prod*= cos(x[i]/sqrt(i+1));
+        }
+        return 1+sum/4000- prod;
+}
+
+//fonction ackley
+double ackley(const std::vector<double>& x)
+{    double a=20, b=0.2, c=2.0*M_PI;
+    int n= x.size();
+    double sum=0.0;
+    double sumCos= 0.0;
+    for(int i{0}; i<n; i++)
+        {
+            sum+= x[i]*x[i];
+            sumCos+=cos(c* x[i]);
+        }
+    double partie1= -a*exp(-b*sqrt(sum/n));
+    double partie2= -exp(sumCos/n);
+    return partie1+ partie2+ a+ exp(1.0);
 }
 
 #endif // BENCHMARKS_H_INCLUDED
