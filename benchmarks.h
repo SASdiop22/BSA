@@ -1,10 +1,14 @@
 #ifndef BENCHMARKS_H_INCLUDED
 #define BENCHMARKS_H_INCLUDED
+<<<<<<< HEAD
 #include"math.h"
 #include<vector>
 #include <cmath>
 
 
+=======
+
+>>>>>>> 3ba78e8535ba397010ef2690bfe3fea878d56aed
 //Bornes [-5,5]
 inline double rosenbrock(const std::vector<double>& x) {
     double sum = 0.0;
@@ -36,7 +40,6 @@ inline double schwefel(const std::vector<double>& x) {
 	}
 	return sum - subSum;
 }
-
 
 //fonction Weierstrass bornes [-1.0,1.0]
 
@@ -89,6 +92,5 @@ double ackley(const std::vector<double>& x)
     double partie2= -exp(sumCos/n);
     return partie1+ partie2+ a+ exp(1.0);
 }
-
 
 #endif // BENCHMARKS_H_INCLUDED
